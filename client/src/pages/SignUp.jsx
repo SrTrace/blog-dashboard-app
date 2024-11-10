@@ -95,7 +95,7 @@ export default function SignUp() {
             <Button
               type="submit"
               gradientDuoTone="purpleToPink"
-              disable={loading}
+              disabled={loading}
             >
               {loading ? (
                 <>
