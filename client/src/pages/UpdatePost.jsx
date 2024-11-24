@@ -1,7 +1,8 @@
 import { Alert, Button, FileInput, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 // import {
@@ -17,31 +18,37 @@ export default function UpdatePost() {
   // const [imageUploadProgress, setImageUploadProgress] = useState(null);
   // const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [inputData, setInputData] = useState({
+    _id: "",
+    title: "",
+    category: "",
+  }); // this is crutch for ReactQuill comp triggers rerender and data the inputs is lost
   const [publishError, setPublishError] = useState(null);
   const navigate = useNavigate();
   const { postId } = useParams();
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    try {
-      const fetchPost = async () => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
+
         if (!res.ok) {
-          console.log(data.message);
           setPublishError(data.message);
           return;
         }
-        if (res.ok) {
-          setPublishError(null);
-          setFormData(data.posts[0]);
-        }
-      };
 
-      fetchPost();
-    } catch (error) {
-      console.log(error.message);
-    }
+        setPublishError(null);
+        setFormData(data.posts[0]);
+        const { _id, title, category } = data.posts[0];
+        setInputData({ _id, title, category });
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    fetchPost();
   }, [postId]);
 
   const handleUploadImage = async () => {
@@ -94,13 +101,13 @@ export default function UpdatePost() {
     e.preventDefault();
     try {
       const res = await fetch(
-        `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        `/api/post/updatepost/${inputData._id}/${currentUser._id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({ ...formData, ...inputData }),
         }
       );
       const data = await res.json();
@@ -129,16 +136,16 @@ export default function UpdatePost() {
             placeholder="Title"
             required
             id="title"
+            value={inputData.title}
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              setInputData({ ...inputData, title: e.target.value })
             }
-            value={formData.title}
           />
           <Select
             onChange={(e) =>
-              setFormData({ ...formData, category: e.target.value })
+              setFormData({ ...inputData, category: e.target.value })
             }
-            value={formData.category}
+            value={inputData.category}
           >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
