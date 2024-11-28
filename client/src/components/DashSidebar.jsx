@@ -5,6 +5,7 @@ import {
   HiDocumentText,
   HiUser,
   HiOutlineUserGroup,
+  HiAnnotation,
 } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
@@ -69,14 +70,24 @@ export default function DashSidebar() {
             </Sidebar.Item>
           )}
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              onClick={() => navigate("/dashboard?tab=users")}
-              className="cursor-pointer"
-              active={tab === "users"}
-              icon={HiOutlineUserGroup}
-            >
-              Users
-            </Sidebar.Item>
+            <>
+              <Sidebar.Item
+                onClick={() => navigate("/dashboard?tab=users")}
+                className="cursor-pointer"
+                active={tab === "users"}
+                icon={HiOutlineUserGroup}
+              >
+                Users
+              </Sidebar.Item>
+              <Sidebar.Item
+                onClick={() => navigate("/dashboard?tab=comments")}
+                className="cursor-pointer"
+                active={tab === "comments"}
+                icon={HiAnnotation}
+              >
+                Comments
+              </Sidebar.Item>
+            </>
           )}
           <Sidebar.Item
             onClick={handleSignout}
