@@ -6,6 +6,7 @@ import {
   HiUser,
   HiOutlineUserGroup,
   HiAnnotation,
+  HiChartPie,
 } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { signoutSuccess } from "../redux/user/userSlice";
@@ -49,6 +50,15 @@ export default function DashSidebar() {
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
+          {currentUser.isAdmin && (
+            <Sidebar.Item
+              active={tab === "dash" || !tab}
+              icon={HiChartPie}
+              onClick={() => navigate("/dashboard?tab=dash")}
+            >
+              Dashboard
+            </Sidebar.Item>
+          )}
           <Sidebar.Item
             active={tab === "profile"}
             icon={HiUser}
@@ -60,17 +70,15 @@ export default function DashSidebar() {
             Profile
           </Sidebar.Item>
           {currentUser.isAdmin && (
-            <Sidebar.Item
-              onClick={() => navigate("/dashboard?tab=posts")}
-              className="cursor-pointer"
-              active={tab === "posts"}
-              icon={HiDocumentText}
-            >
-              Posts
-            </Sidebar.Item>
-          )}
-          {currentUser.isAdmin && (
             <>
+              <Sidebar.Item
+                onClick={() => navigate("/dashboard?tab=posts")}
+                className="cursor-pointer"
+                active={tab === "posts"}
+                icon={HiDocumentText}
+              >
+                Posts
+              </Sidebar.Item>
               <Sidebar.Item
                 onClick={() => navigate("/dashboard?tab=users")}
                 className="cursor-pointer"
