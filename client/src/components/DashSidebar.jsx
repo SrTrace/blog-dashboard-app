@@ -55,6 +55,7 @@ export default function DashSidebar() {
               active={tab === "dash" || !tab}
               icon={HiChartPie}
               onClick={() => navigate("/dashboard?tab=dash")}
+              className="cursor-pointer"
             >
               Dashboard
             </Sidebar.Item>
