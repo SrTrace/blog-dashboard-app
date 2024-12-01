@@ -15,7 +15,6 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
-  console.log(sidebarData);
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const searchQueryFromUrl = urlParams.get("searchQuery");

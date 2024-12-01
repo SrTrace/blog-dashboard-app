@@ -151,7 +151,7 @@ export default function Dashboard() {
                     <Table.Cell>
                       <img
                         src={user.profilePicture}
-                        alt={user.username}
+                        // alt={user.username}
                         className="w-10 h-10 rounded-full bg-gray-500"
                       />
                     </Table.Cell>
